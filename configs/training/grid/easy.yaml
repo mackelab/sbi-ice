@@ -1,0 +1,5 @@
+name: easy
+noisy: True
+layer_idx: 0
+layer_sparsity: 5
+smb_sparsity: 10

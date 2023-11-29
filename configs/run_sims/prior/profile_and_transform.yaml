@@ -1,0 +1,7 @@
+type: profile_and_transform
+GP_mean_mu: 0.5
+GP_mean_sd: 0.25
+GP_var_min: 0.1
+GP_var_max: 0.3
+length_scale: 2.5E+3
+nu: 2.5

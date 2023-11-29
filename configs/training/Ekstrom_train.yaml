@@ -1,0 +1,36 @@
+defaults:
+  - _self_
+  - posterior_model: nsf_cnn
+  - training: basic
+  - paths: Ekstrom2
+  - grid: middle
+  - launcher: cpu_local
+
+seed: 0
+post_name: all_final
+layers_fname: all_layers_final.p
+mb_fname: all_mbs_final.p
+num_sims_training: -1 #-1 for all
+gt_version: v0
+selection_method: advanced_noise
+
+hydra:
+  job:
+    chdir: True
+  run:
+    dir: ../../out/${paths.shelf}/${paths.exp_path}/sbi_sims/posteriors
+
+  sweep:
+    dir: ../..out/${paths.shelf}/${paths.exp_path}/sbi_sims/posteriors
+    subdir: ${post_name}/layer_${grid.layer_idx}_seed_${seed}
+
+
+  output_subdir: .
+
+  sweeper:
+    params:
+      grid.layer_idx: range(0,4)
+      seed: range(100,105)
+
+
+

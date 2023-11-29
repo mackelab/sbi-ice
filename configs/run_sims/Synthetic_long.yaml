@@ -1,0 +1,27 @@
+defaults:
+  - _self_
+  - iso_hparams: long_profile
+  - setup_file: Synthetic_long
+  - random_seed: 0_seed
+  - prior: profile_and_transform
+  - scheds: two_phases
+  - launcher: cpu_local
+
+hydra:
+  job:
+    env_set:
+      OMP_NUM_THREADS: 1
+    chdir: True
+  run:
+    dir: ../../out/Synthetic_long
+
+  sweep:
+    dir: ../../out/Synthetic_long/exp3
+    subdir: layer_sims/${random_seed.seed}
+
+  output_subdir: .
+
+
+  sweeper:
+      params:
+        random_seed.seed: range(1,5)

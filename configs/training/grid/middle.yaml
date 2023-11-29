@@ -1,0 +1,5 @@
+name: middle
+noisy: True
+layer_idx: 1
+layer_sparsity: 1
+smb_sparsity: 10

@@ -1,0 +1,5 @@
+name: sparse
+noisy: True
+layer_idx: 0
+layer_sparsity: 10
+smb_sparsity: 10

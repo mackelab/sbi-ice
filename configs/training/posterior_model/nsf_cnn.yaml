@@ -1,0 +1,17 @@
+name: nsf_cnn
+model: nsf
+hidden_features: 50
+num_components: 3
+num_transforms: 5
+num_bins: 10
+embedding_net:
+  include: True
+  type: CNN
+  in_channels: 1
+  out_channels_per_layer: [6,12]
+  num_conv_layers: 2
+  num_linear_layers: 2
+  num_linear_units: 50
+  output_dim: 50
+  kernel_size: 5
+  pool_kernel_size: 2

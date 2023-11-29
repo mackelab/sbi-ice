@@ -1,0 +1,37 @@
+defaults:
+  - _self_
+  - launcher: cpu_local
+
+
+
+shelf: Ekstrom
+exp_path: exp2
+post_name: all_final
+
+posterior_config_fol: ../../../posteriors/${post_name}
+n_post_samples: 1000
+n_predictive_sims: 100
+overwrite_saved_sims: True
+layer_idx: 0
+seed: 0
+name: layer_${layer_idx}_seed_${posterior_seed}
+
+hydra:
+  job:
+    chdir: True
+  run:
+    dir: ../../out/${shelf}/${exp_path}/sbi_sims/post_predictives
+
+  sweep:
+    dir: ../../out/${shelf}/${exp_path}/sbi_sims/post_predictives
+    subdir: ${post_name}/${name}
+
+
+
+  output_subdir: .
+
+  sweeper:
+    params:
+      layer_idx: range(0,4)
+      +posterior_seed: range(100,105)
+

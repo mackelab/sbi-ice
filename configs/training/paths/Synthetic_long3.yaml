@@ -1,0 +1,4 @@
+shelf: Synthetic_long
+shelf_setup_path: data/Synthetic_long/setup_files
+shelf_folder_path: out/Synthetic_long
+exp_path: exp3

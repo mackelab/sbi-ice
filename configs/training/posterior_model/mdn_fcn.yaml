@@ -1,0 +1,12 @@
+name: mdn_fcn
+model: mdn
+hidden_features: 500
+num_components: 3
+num_transforms: 5
+num_bins: 10
+embedding_net:
+  include: True
+  type: FCN
+  num_layers: 1
+  num_hiddens: 20
+  output_dim: 20

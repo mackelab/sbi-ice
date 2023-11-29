@@ -1,0 +1,6 @@
+nx_iso: 100
+ny_iso: 1
+dt: 0.5
+n_iter: 5
+init_layers: 10
+time_end: 500

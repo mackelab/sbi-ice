@@ -1,0 +1,8 @@
+name: basic
+model: mdn
+hidden_features: 500
+num_components: 3
+num_transforms: 5
+num_bins: 10
+embedding_net:
+  include: False
