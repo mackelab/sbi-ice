@@ -12,7 +12,7 @@ mathtext.default     : regular
 
 figure.dpi: 200
 
-font.family          : serif
+font.family          : sans-serif
 font.serif           : Arial, sans-serif
 font.sans-serif      : Arial, sans-serif
 font.cursive         : Arial, sans-serif

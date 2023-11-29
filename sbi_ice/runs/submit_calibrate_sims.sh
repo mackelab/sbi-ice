@@ -4,9 +4,8 @@
 #SBATCH --nodes=1                 # Ensure that all cores are on one machine
 #SBATCH --time=0-01:00            # Runtime in D-HH:MM
 #SBATCH --mem-per-cpu=16G                # Memory pool for all cores (see also --mem-per-cpu)
-#SBATCH --output=hostname_%j.out  # File to which STDOUT will be written - make sure this is not on $HOME
-#SBATCH --error=hostname_%j.err   # File to which STDERR will be written - make sure this is not on $HOME
-#SBATCH --mail-type=END           # Type of email notification- BEGIN,END,FAIL,ALL
+#SBATCH --output=calibrate_sims.out  # File to which STDOUT
+#SBATCH --error=calibrate_sims.err   # File to which STDERR
 
 #scontrol show job $SLURM_JOB_ID
 

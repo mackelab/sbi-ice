@@ -4,7 +4,7 @@ defaults:
   - training: basic
   - paths: Ekstrom2
   - grid: middle
-  - launcher: cpu_local
+  - override hydra/launcher: gpu_slurm #=basic for local, serial job submission (debugging)
 
 seed: 0
 post_name: all_final
@@ -21,7 +21,7 @@ hydra:
     dir: ../../out/${paths.shelf}/${paths.exp_path}/sbi_sims/posteriors
 
   sweep:
-    dir: ../..out/${paths.shelf}/${paths.exp_path}/sbi_sims/posteriors
+    dir: ../../out/${paths.shelf}/${paths.exp_path}/sbi_sims/posteriors
     subdir: ${post_name}/layer_${grid.layer_idx}_seed_${seed}
 
 
@@ -30,7 +30,7 @@ hydra:
   sweeper:
     params:
       grid.layer_idx: range(0,4)
-      seed: range(100,105)
+      seed: range(1000,1001)
 
 
 

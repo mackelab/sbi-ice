@@ -21,7 +21,7 @@ from tueplots import figsizes
 color_opts = plotting_utils.setup_plots()
 
 #Change config_name for other shelves
-@hydra.main(version_base=None, config_path="../../configs/training", config_name="Synthetic_long_train")
+@hydra.main(version_base=None, config_path="../../configs/training", config_name="Ekstrom_train")
 def my_app(cfg : DictConfig)->None:
 
     logging.basicConfig(filename="training.log",filemode="w",encoding="utf-8",level=logging.INFO)

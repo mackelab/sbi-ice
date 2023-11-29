@@ -1,9 +1,10 @@
 # Simulation-Based Inference of Surface Accumulation and Basal Melt Rates of Antarctic Ice Shelves from Isochronal Layers
 
-This repository contains research code for Simulation-based inference of surface accumulation and basal melt rates of Antarctic Ice Shelves from Isochronal Layers [preprint link]. It contains scripts for the forward model, along with the inference workflow. For code used to preprocess ice shelf data, and generate synthetic ice shelves using icepack[icepack link] - go to [preprocessing repository link]. 
+This repository contains research code for Simulation-based inference of surface accumulation and basal melt rates of Antarctic Ice Shelves from Isochronal Layers [preprint link]. It contains scripts for the forward model, along with the inference workflow. For code used to preprocess ice shelf data, and generate synthetic ice shelves using [firedrake](https://www.firedrakeproject.org) and [icepack](https://icepack.github.io) - see [preprocessing_ice_data](https://github.com/mackelab/preprocessing_ice_data/). 
 Maintenance is ongoing! Expect improvements in terms of extended functionality and improved usability in the future.
 
 Some small data and output files are already included in this repository for quicker start-up. Some parts of the workflow require bigger files. These will clearly be marked in the **workflow** section, along with links to where these files can be downloaded.
+The picked IRH data for Ekström Ice Shelf can be found [here](https://doi.org/doi:10.5281/zenodo.10231043).
 
 ## Installation
 Activate a virtual environment, e.g. using conda. Install dependencies:
@@ -47,18 +48,18 @@ First, we look at the calibration simulations. We find (and ignore) any anomalou
     gt_version
     anomalies_overwrite = True
     layer_bounds_overwrite = True
-    noise_dist_overwrite = True or False
+    noise_dist_overwrite = True/False
+    sim_or_calib = "layer_sims"/"calib_sims"
 ```
 
-We then find any anomalous results in `.layer_sims`. Keep everything the same, and make sure `layer_bounds_overwrite=False` and `noise_dist_overwite = False`. This can be sped up given access to multiple CPU cores by running `submit_calibrate_sims.sh`
+We then find any anomalous results in `.layer_sims`. Keep everything the same, and make sure `layer_bounds_overwrite=False` and `noise_dist_overwite = False`. This can be sped up given access to multiple CPU cores by running `sbatch submit_calibrate_sims.sh` on SLURM or `source submit_calibrate_sims.sh` locally.
 
 ### 3. Noise model and best fitting layer selection
 
 Our inference workflow requires only one layer out of each simulation to be the observed value, and so we select the best fitting layer (by MSE). This is done for all simulations in a single job using the script `sbi_ice/runs/select_layers.py`. This can be parallelized across all the simulation jobs using `sbi_ice_runs/submit_select_layers_local.sh` or `sbi_ice/runs/submit_select_layers_slurm.sh`
 The rest of the workflow takes in one processed layer file for all simulations - the per-job files can be combined and saved into one file using `notebooks/workflow/combine_pickles.ipynb`
 
-For the processed simulation data for both the synthetic and Ekström ice shelves used used in our experiments, you can find the file at [link to data repository].
-
+To reproduce the results reported in the paper, you can [download the posteriors and processed simulation data](https://doi.org/doi:10.5281/zenodo.10245153), and save the respective files in `out`.
 
 
 ### 4. Training a Density Estimator

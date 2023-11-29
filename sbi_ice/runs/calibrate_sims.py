@@ -13,10 +13,10 @@ import multiprocessing
 
 
 
-shelf = "Synthetic_long"
-exp = "exp3"
-# shelf = "Ekstrom"
-# exp = "exp2"
+# shelf = "Synthetic_long"
+# exp = "exp3"
+shelf = "Ekstrom"
+exp = "exp2"
 hydra_dir = to_absolute_path("../../out/" + shelf)
 setup_dir = to_absolute_path("../../data/" + shelf + "/setup_files")
 gt_version = "v0"
@@ -24,13 +24,14 @@ selection_method = "advanced_noise"
 anomalies_overwrite = True
 layer_bounds_overwrite = False
 noise_dist_overwrite = False
+sim_or_calib = "layer_sims"
 
 logging.basicConfig(filename=Path("../../out/",shelf,exp,"calib_log.log"),filemode="w",encoding="utf-8",level=logging.INFO)
 nprocess = 1
 # nprocess = multiprocessing.cpu_count()
 logging.info("num_processes: " + str(nprocess))
 
-loader = ShortProfileLoader.ShortProfileLoader(Path(setup_dir),Path(hydra_dir),exp,sims_path ="layer_sims",gt_version=gt_version)
+loader = ShortProfileLoader.ShortProfileLoader(Path(setup_dir),Path(hydra_dir),exp,sims_path =sim_or_calib,gt_version=gt_version)
 logging.info("defined loader")
 
 fs = 1/np.diff(loader.x).mean() 
@@ -132,7 +133,7 @@ def calculate_noise_coeffs(res,job,sim):
         logging.info("Calculating PSD")
         logging.info(len(loader.masks))
         for layer_index,layer in enumerate(loader.real_layers):
-            best_layer,temp_norm,idx = best_contour(torch.Tensor(layer),torch.Tensor(dsum_iso[:,0,:].T+loader.base),layer_mask = loader.masks[layer_index],method = "MSE",layer_idx = None)
+            best_layer,temp_norm,idx = best_contour(torch.Tensor(layer),torch.Tensor(dsum_iso[:,0,:].T+loader.base),layer_mask = loader.masks[layer_index],method = "MSE")
             logging.info("Smoothing best layer")
             nan_mask,smoothed_sim = butter_lowpass_filter(best_layer.numpy(),cutoff,fs,order=5)
             logging.info("Calculating residuals in real")

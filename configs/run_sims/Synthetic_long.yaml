@@ -5,7 +5,7 @@ defaults:
   - random_seed: 0_seed
   - prior: profile_and_transform
   - scheds: two_phases
-  - launcher: cpu_local
+  - override hydra/launcher: basic #=basic for local, serial job submission (debugging)
 
 hydra:
   job:
@@ -24,4 +24,4 @@ hydra:
 
   sweeper:
       params:
-        random_seed.seed: range(1,5)
+        random_seed.seed: range(0,10)

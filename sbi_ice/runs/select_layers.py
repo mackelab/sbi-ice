@@ -65,7 +65,6 @@ def save_all_smb_bmb_best_layers(job,loader,PSD_dict,selection_method="MSE",nois
             dsum_iso = dsum_isos[sim]
             age_iso = age_isos[sim]
             layers = torch.from_numpy(dsum_iso[:,0,:]).T
-
             if noise:
                 layers_thickness = dsum_iso[:,0,:].T
                 heights = layers_thickness + loader.base.flatten()
@@ -81,11 +80,10 @@ def save_all_smb_bmb_best_layers(job,loader,PSD_dict,selection_method="MSE",nois
                     base_error,depth_corr,picking_error,error = depth_error(layer_xs,layer_depths)
                 flipped_error = torch.flip(error,dims=(0,))
                 layers = layers + flipped_error
-
             for lidx in range(0,loader.real_layers.shape[0]):
                 layer_idx = loader.real_layer_idxs[lidx] if loader.real_layer_idxs is not None else None
                 true_layer = torch.from_numpy(loader.real_layers[lidx])
-                contour,norm,aidx = best_contour(true_layer,layers+loader.base.T,layer_mask=loader.masks[lidx],method = "MSE",layer_idx = layer_idx)
+                contour,norm,aidx = best_contour(true_layer,layers+loader.base.T,layer_mask=loader.masks[lidx],method = "MSE")
                 # print("Calculated best layers")
                 contour_arrays[lidx,sim,:] = contour
                 norm_arrays[lidx,sim] = norm
@@ -118,6 +116,7 @@ if __name__ == "__main__":
     logger.info("defined loader")
     anomalies = loader.find_anomalies()
     logger.info("found anomalies")
+    logger.info(anomalies)
     loader.all_layer_xbounds()
     logger.info("defined xbounds")
     selection_method_names = {"MSE":"MSE","advanced_noise":"advanced_noise"}

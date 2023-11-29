@@ -135,7 +135,7 @@ def sim_post_sample(loader,x,sample,real_layer_number,layer_mask,selection_metho
     #Select the best layer and return results.
     flipped_error = torch.flip(error,dims=(0,))
     input_layers = input_layers + flipped_error
-    best_contour,norm,aidx = noise_model.best_contour(true_layer,input_layers,layer_mask=layer_mask,method=selection_method,layer_idx=layer_idx)
+    best_contour,norm,aidx = noise_model.best_contour(true_layer,input_layers,layer_mask=layer_mask,method=selection_method)
     x_eval = loader.x[layer_mask]
     best_contour = modelling_utils.regrid(geom.x, best_contour.numpy(), x_eval,kind="linear")
     best_age = geom.age_iso[aidx]

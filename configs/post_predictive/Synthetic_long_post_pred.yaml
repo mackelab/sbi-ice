@@ -1,6 +1,6 @@
 defaults:
   - _self_
-  - launcher: cpu_local
+  - override hydra/launcher: cpu_slurm #=basic for local, serial job submission (debugging)
 
 
 shelf: Synthetic_long
@@ -9,7 +9,7 @@ post_name: test
 
 posterior_config_fol: ../../../posteriors/${post_name}
 n_post_samples: 1000
-n_predictive_sims: 1
+n_predictive_sims: 100
 overwrite_saved_sims: True
 layer_idx: 0
 seed: 0

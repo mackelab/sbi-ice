@@ -4,7 +4,7 @@ defaults:
   - training: basic
   - paths: Synthetic_long3
   - grid: middle
-  - launcher: cpu_local
+  - override hydra/launcher: gpu_slurm #=basic for local, serial job submission (debugging)
 
 seed: 0
 post_name: test

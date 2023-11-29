@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from tueplots import figsizes
 color_opts = plotting_utils.setup_plots()
 #Change config_name for other shelves
-@hydra.main(version_base=None, config_path="../../configs/post_predictive", config_name="Synthetic_long_post_pred") 
+@hydra.main(version_base=None, config_path="../../configs/post_predictive", config_name="Ekstrom_post_pred") 
 def my_app(cfg : DictConfig)->None:
     #Also need config file for the training of the posterior we want to evaluate here
     logging.basicConfig(filename="post_predictive.log",encoding="utf-8",level=logging.INFO)
