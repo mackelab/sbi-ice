@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 # Package meta-data.
-NAME = "sbi_ice"
-URL = "https://github.com/mackelab/sbi_ice"
+NAME = "sbi-ice"
+URL = "https://github.com/mackelab/sbi-ice"
 EMAIL = "guy.moss@student.uni-tuebingen.de"
 AUTHOR = "Guy Moss"
 REQUIRES_PYTHON = ">=3.9.0"

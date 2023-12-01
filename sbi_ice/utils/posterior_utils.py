@@ -137,6 +137,6 @@ def sim_post_sample(loader,x,sample,real_layer_number,layer_mask,selection_metho
     input_layers = input_layers + flipped_error
     best_contour,norm,aidx = noise_model.best_contour(true_layer,input_layers,layer_mask=layer_mask,method=selection_method)
     x_eval = loader.x[layer_mask]
-    best_contour = modelling_utils.regrid(geom.x, best_contour.numpy(), x_eval,kind="linear")
+    #best_contour = modelling_utils.regrid(geom.x, best_contour.numpy(), x_eval,kind="linear")
     best_age = geom.age_iso[aidx]
     return geom.dsum_iso,best_contour,norm,best_age,bmb_regrid.flatten(),active_trackers

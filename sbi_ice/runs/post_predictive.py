@@ -116,24 +116,30 @@ def my_app(cfg : DictConfig)->None:
 
     tmb = smb_all[0].numpy() + bmb_all[0].numpy()
     logging.info("Made tmb")
-
+    
+    #plot_layer_mask = layer_mask
+    plot_layer_mask = np.ones_like(layer_mask).astype(bool)
     #Plot posterior + posterior predictive
-    fig,axs = plotting_utils.plot_posterior_nice(loader.x,
-                                                smb_mask,
-                                                tmb,
-                                                prior_spatial_samples,
-                                                spatial_samples,
-                                                layer_mask,
-                                                contour_arrays[cfg.layer_idx,:n_predictive_sims,:],
-                                                age_arrays[cfg.layer_idx,:n_predictive_sims],
-                                                best_layers,
-                                                ages,
-                                                plot_layer,
-                                                loader.base.flatten(),
-                                                loader.surface.flatten(),
-                                                true_smb,
-                                                plot_samples=False
-                                                )
+    fig,axs = plotting_utils.plot_posterior_nice(x = loader.x,
+                                            mb_mask = smb_mask,
+                                            tmb = tmb,
+                                            prior_smb_samples = prior_spatial_samples,
+                                            posterior_smb_samples = spatial_samples,
+                                            layer_mask = plot_layer_mask,
+                                            LMI_boundary = loader.x[layer_mask][0],
+                                            prior_layer_samples= contour_arrays[cfg.layer_idx,:n_predictive_sims,:],
+                                            prior_layer_ages=age_arrays[cfg.layer_idx,:n_predictive_sims],
+                                            posterior_layer_samples=best_layers,
+                                            posterior_layer_ages=ages,
+                                            true_layer=plot_layer,
+                                            shelf_base=loader.base.flatten(),
+                                            shelf_surface=loader.surface.flatten(),
+                                            true_smb=true_smb,
+                                            true_age=None,
+                                            plot_samples=False,
+                                            title=None,
+                                            )
+
     fig.savefig("post_predictive_nice.png")
     logging.info("Done!")
 

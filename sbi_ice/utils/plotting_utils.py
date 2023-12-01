@@ -231,6 +231,7 @@ def plot_posterior_nice(x,
                         prior_smb_samples,
                         posterior_smb_samples,
                         layer_mask,
+                        LMI_boundary,
                         prior_layer_samples,
                         prior_layer_ages,
                         posterior_layer_samples,
@@ -252,6 +253,7 @@ def plot_posterior_nice(x,
         prior_smb_samples (ndarray): Prior SMB samples.
         posterior_smb_samples (ndarray): Posterior SMB samples.
         layer_mask (ndarray): Boolean mask indicating the locations where the layer elevations were used for training.
+        LMI_boudnary (float): LMI boundary for this layer.
         prior_layer_samples (ndarray): Prior layer samples.
         prior_layer_ages (ndarray): Prior layer ages.
         posterior_layer_samples (ndarray): Posterior layer samples.
@@ -267,9 +269,12 @@ def plot_posterior_nice(x,
     Returns:
         None
     """
-
-    
-    
+    if true_age is not None:
+        x_label = "Distance along flowline [km]"
+        gt_label = "GT"
+    else:
+        x_label = "Distance from GL [km]"
+        gt_label ="Observed"
     plt.rcParams.update(figsizes.icml2022_full(nrows=3,height_to_width_ratio=0.35))
 
     ax_label_loc = -0.085
@@ -336,7 +341,7 @@ def plot_posterior_nice(x,
         ax1s = [ax,ax2]
         ax.set_ylim(np.min(shelf_base), np.max(shelf_base)+5)
         dist = np.mean(shelf_surface[layer_mask]-post_layer_mean)
-        ax2.set_ylim(np.min((true_layer -0.4*dist)[layer_mask]),np.max(shelf_surface))
+        ax2.set_ylim(np.min((post_layer_mean -0.4*dist)[layer_mask]),np.max(shelf_surface))
         ax2.tick_params(bottom=False, labelbottom=False)
         ax2.spines[["bottom","top","right"]].set_visible(False)
 
@@ -383,13 +388,13 @@ def plot_posterior_nice(x,
             nx = len(x[layer_mask])
             axi.annotate(r'true age = {:.0f} a'.format(true_age),
                      xy=(x[layer_mask][0]/1e3,post_layer_mean[0]),xycoords="data",textcoords="offset points",
-                     xytext=(0,20),color = color_opts["colors"]["observation"])
+                     xytext=(0,25),color = color_opts["colors"]["observation"])
 
         #Draw vertical line at LMI boundary
-        #axi.axvline(x=loader.x[layer_mask][0]/1e3,color="green",linestyle="--",label="LMI boundary")
+        axi.axvline(x=LMI_boundary/1e3,color=color_opts["colors"]["boundary_condition"],linestyle="--",label="LMI boundary")
         
         
-    labels = ["Shelf","Prior","Posterior","Observed"]
+    labels = ["Shelf","Prior","Posterior",gt_label]
     ax2.legend(handles=[(s1,s3),(pr1,pr2),(po1,po2),(ob1,)],labels = labels,bbox_to_anchor = (0.0,0,0.95,0.95),loc="upper right", ncol=2)
 
 
@@ -426,7 +431,7 @@ def plot_posterior_nice(x,
         ax2.plot((-d, +d), (-10*d, +10*d), **kwargs)     
         kwargs.update(transform=ax.transAxes)
         ax.plot((-d, +d), (1 - 10*d*ax_ratio, 1 + 10*d*ax_ratio), **kwargs)
-        ax.set_xlabel("Distance along flowline [km]")
+        ax.set_xlabel(x_label)
         ax.spines['bottom'].set_bounds(x[0]/1e3-0.001,x[-1]/1e3)
 
 
@@ -435,7 +440,7 @@ def plot_posterior_nice(x,
         ax1s = [ax]
         ax.set_ylabel('$\dot{b}$ [m/a]')
 
-        ax.set_xlabel("Distance along flowline [km]")
+        ax.set_xlabel(x_label)
         ax.text(ax_label_loc, 0.95, "c", transform=ax.transAxes,fontsize=12, va='top', ha='right')
         ax.spines['bottom'].set_bounds(x[0]/1e3-0.001,x[-1]/1e3)
         # ax.set_ylim(-0.5,1.5)
@@ -589,8 +594,8 @@ def compare_posteriors(x,posteriors,layers,real_smb=None,kottas_smb = None,label
         #Calculate SLA and LLA approximations
         SLA = shallow_layer_approximation(layer_depth=layer_depth,age=layer_age)
         LLA = local_layer_approximation(layer_depth=layer_depth,total_thickness=total_thickness,age=layer_age)
-        sl1, = ax.plot(layer_x[layer_x<x[-1]+1e-5],SLA[layer_x<x[-1]+1e-5],color = color_opts["colors"]["contrast1"],linestyle="solid", linewidth=0.75)
-        ll1, = ax.plot(layer_x[layer_x<x[-1]+1e-5],LLA[layer_x<x[-1]+1e-5],color = color_opts["colors"]["contrast2"],linestyle="solid", linewidth=0.75, zorder=-1)
+        sl1, = ax.plot(layer_x[layer_x<x[-1]+1e-5],SLA[layer_x<x[-1]+1e-5],color = color_opts["colors"]["contrast1"],linestyle="solid", linewidth=1.2)
+        ll1, = ax.plot(layer_x[layer_x<x[-1]+1e-5],LLA[layer_x<x[-1]+1e-5],color = color_opts["colors"]["contrast2"],linestyle="solid", linewidth=1.2, zorder=-1)
         for axi in axs.flatten():
             if axi != ax:
                 # axi.plot(x,post_mean_smb,color = "black",alpha=0.25)
@@ -600,7 +605,7 @@ def compare_posteriors(x,posteriors,layers,real_smb=None,kottas_smb = None,label
     #If either the GT or validation data is given, plot it.
     if real_smb is not None:
         for axi in axs.flatten():
-            gt1, = axi.plot(layer_x[layer_x<x[-1]+1e-5],real_smb[layer_x<x[-1]+1e-5],color=color_opts["colors"]["observation"],linewidth = 1.0)
+            gt1, = axi.plot(layer_x[layer_x<x[-1]+1e-5],real_smb[layer_x<x[-1]+1e-5],color=color_opts["colors"]["observation"],linewidth = 1.2)
     if kottas_smb is not None:
         for axi in axs.flatten():
             kt1, = axi.plot(kottas_smb["kottas_xmb"]/1e3,
