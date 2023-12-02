@@ -1,6 +1,6 @@
 # Simulation-Based Inference of Surface Accumulation and Basal Melt Rates of an Antarctic Ice Shelf from Isochronal Layers
 
-This repository contains research code for "Simulation-Based Inference of Surface Accumulation and Basal Melt Rates of an Antarctic Ice Shelf from Isochronal Layers". It contains scripts for the forward model, along with the inference workflow. For code used to preprocess ice shelf data, and generate synthetic ice shelves using [firedrake](https://www.firedrakeproject.org) and [icepack](https://icepack.github.io) - see [preprocessing_ice_data](https://github.com/mackelab/preprocessing-ice-data/). 
+This repository contains research code for "Simulation-Based Inference of Surface Accumulation and Basal Melt Rates of an Antarctic Ice Shelf from Isochronal Layers". It contains scripts for the forward model, along with the inference workflow. For code used to preprocess ice shelf data, and generate synthetic ice shelves using [firedrake](https://www.firedrakeproject.org) and [icepack](https://icepack.github.io) - see [preprocessing-ice-data](https://github.com/mackelab/preprocessing-ice-data/). 
 Maintenance is ongoing! Expect improvements in terms of extended functionality and improved usability in the future.
 
 Some small data and output files are already included in this repository for quicker start-up. Some parts of the workflow require bigger files. These will clearly be marked in the **workflow** section, along with links to where these files can be downloaded.
