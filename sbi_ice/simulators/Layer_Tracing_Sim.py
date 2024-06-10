@@ -200,7 +200,7 @@ class Geom():
         self.dQdy = regrid(x_setup,dQdy,self.x).reshape(self.nx,self.ny)
 
 
-    def initialize_layers(self,sched:Scheduele,init_nlayers:int):
+    def initialize_layers(self, sched:Scheduele, init_nlayers:int, tracker_coords:np.ndarray= np.array([[0.0,0.0]])):
         """
         Initialize arrays to hold layer thickness, layer age, particle tracker positions.
         Most layers start at thickness 0.0, the middle init_layers are equal in thicknesses to add up to the total ice shelf thickness
@@ -237,7 +237,15 @@ class Geom():
             self.d_iso  = d_iso_out
             self.dsum_iso = np.cumsum(self.d_iso,axis=2)
             self.age_iso = np.zeros(init_nlayers)
-            self.trackers = Trackers([Tracker(self.x[0],self.top_layer,self.ss[0][0]-self.bs[0][0])])
+            self.tracker_coords = tracker_coords
+            tracker_positions = []
+            for pos in self.tracker_coords:
+                tracker_x = np.argmin(np.abs(self.x-pos[0]))
+                tracker_z = np.argmin(np.abs((self.ss[tracker_x,0]-(self.dsum_iso[tracker_x,0,:]+self.bs[tracker_x,0]))-pos[1]))
+                tracker_z = self.top_layer-tracker_z
+                print(tracker_z)
+                tracker_positions.append([tracker_x,tracker_z])
+            self.trackers = Trackers([Tracker(self.x[pos[0]],self.top_layer-pos[1],self.dsum_iso[pos[0],0,self.top_layer-pos[1]]) for pos in tracker_positions])
 
 
         temp = np.concatenate((np.zeros(shape=(self.nx,self.ny,sched.n_layer_base)),self.d_iso,np.zeros(shape=(self.nx,self.ny,sched.n_layer_surface))),axis=2).copy()
@@ -272,7 +280,7 @@ class Geom():
             pos_array[i,:] = np.array([tracker.x,0,self.dsum_iso[np.argmin(np.abs(self.x-tracker.x)),0,tracker.layer]+self.bs[np.argmin(np.abs(self.x-tracker.x)),0]])
 
 
-        return pos_array
+        return pos_array[pos_array[:,0]<self.x[-1],:]
 
 
 
@@ -516,7 +524,11 @@ def tracker_step(geom,dt):
         if tracker.x<geom.x[-1]-1e-3:
             tracker.update_z(geom.dsum_iso[np.argmin(np.abs(geom.x-tracker.x)),0,tracker.layer])
 
-    geom.trackers.add_tracker(Tracker(geom.x[0],geom.top_layer,geom.ss[0][0]-geom.bs[0][0]))
+    for pos in geom.tracker_coords:
+        tracker_x = np.argmin(np.abs(geom.x-pos[0]))
+        tracker_z = np.argmin(np.abs((geom.ss[tracker_x,0]-(geom.dsum_iso[tracker_x,0,:]+geom.bs[tracker_x,0]))-pos[1]))
+        tracker_z = geom.top_layer-tracker_z
+        geom.trackers.add_tracker(Tracker(geom.x[tracker_x],geom.top_layer-tracker_z,geom.dsum_iso[tracker_x,0,geom.top_layer-tracker_z]))
 
 
 
