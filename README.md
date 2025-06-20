@@ -4,7 +4,7 @@ This repository contains research code for "Simulation-Based Inference of Surfac
 Maintenance is ongoing! Expect improvements in terms of extended functionality and improved usability in the future.
 
 Some small data and output files are already included in this repository for quicker start-up. Some parts of the workflow require bigger files. These will clearly be marked in the **workflow** section, along with links to where these files can be downloaded.
-The picked IRH data for Ekström Ice Shelf can be found [here](https://nc-geophysik.guz.uni-tuebingen.de/index.php/s/wH5zqPaBGZAPRyD).
+The picked IRH data for Ekström Ice Shelf can be found [here](https://doi.pangaea.de/10.1594/PANGAEA.965143).
 
 ## Installation
 Activate a virtual environment, e.g. using conda. Install dependencies:
